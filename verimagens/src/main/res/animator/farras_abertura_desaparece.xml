@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set
+    android:ordering="sequentially"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator
+
+        android:startOffset="3000"
+        android:propertyName="alpha"
+        android:duration="500"
+        android:valueTo="0.0f"/>
+</set>

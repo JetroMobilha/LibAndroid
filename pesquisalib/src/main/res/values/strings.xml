@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PesquisaLib</string>
+
+    <string name="pesquisa">Pesquisar</string>
+</resources>

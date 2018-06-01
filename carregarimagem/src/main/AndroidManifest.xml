@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.carregarimagem" >
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application>
+        <activity android:name=".CapturaImagem.CarregarImagen" />
+        <activity android:name=".CapturaImagem.ResultActivity" />
+    </application>
+</manifest>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ListaRapita</string>
+    <string name="carregar_de_novo">Carregar de novo</string>
+    <string name="sem_coneccao"> Sem coneção a internet \n Conecta-se e tente novamente porfavor </string>
+</resources>

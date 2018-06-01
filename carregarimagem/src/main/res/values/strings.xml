@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CarregarImagem</string>
+    <string name="ok">Ok</string>
+    <string name="canselar">Canselar</string>
+    <string name="editar_imagem">Editor de Imagem</string>
+    <string name="permissao">Conseder a permissão</string>
+</resources>

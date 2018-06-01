@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Autenticar</string>
+    <string name="aguarde">Aguarde …</string>
+    <string name="obrigatorio"> Campo de preencimento obrigatorio </string>
+    <string name="dado_invalido">Dado invalido</string>
+    <string name="senha_diferentes">Senhas diferentes</string>
+</resources>

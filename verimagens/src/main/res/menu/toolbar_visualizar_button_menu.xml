@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <item
+            android:id="@+id/visualizador_partilhar"
+            android:icon="@drawable/ic_action_partilhar"
+            android:title="@string/partilhar"
+             app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/visualizador_gruardar"
+            android:icon="@drawable/ic_action_baixar"
+            android:title="@string/guardar"
+            app:showAsAction="always"/>
+</menu>

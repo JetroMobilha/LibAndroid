@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/adapterutil" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/autenticar" />
+            <option value="$PROJECT_DIR$/carregarimagem" />
+            <option value="$PROJECT_DIR$/httplib" />
+            <option value="$PROJECT_DIR$/imagens" />
+            <option value="$PROJECT_DIR$/jsonbd" />
+            <option value="$PROJECT_DIR$/listarapita" />
+            <option value="$PROJECT_DIR$/pesquisalib" />
+            <option value="$PROJECT_DIR$/verimagens" />
+          </set>
+        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

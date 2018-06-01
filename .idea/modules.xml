@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/JetroLibAndroid.iml" filepath="$PROJECT_DIR$/JetroLibAndroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/adapterutil/adapterutil.iml" filepath="$PROJECT_DIR$/adapterutil/adapterutil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/autenticar/autenticar.iml" filepath="$PROJECT_DIR$/autenticar/autenticar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/carregarimagem/carregarimagem.iml" filepath="$PROJECT_DIR$/carregarimagem/carregarimagem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/httplib/httplib.iml" filepath="$PROJECT_DIR$/httplib/httplib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/imagens/imagens.iml" filepath="$PROJECT_DIR$/imagens/imagens.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jsonbd/jsonbd.iml" filepath="$PROJECT_DIR$/jsonbd/jsonbd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/listarapita/listarapita.iml" filepath="$PROJECT_DIR$/listarapita/listarapita.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pesquisalib/pesquisalib.iml" filepath="$PROJECT_DIR$/pesquisalib/pesquisalib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/verimagens/verimagens.iml" filepath="$PROJECT_DIR$/verimagens/verimagens.iml" />
+    </modules>
+  </component>
+</project>

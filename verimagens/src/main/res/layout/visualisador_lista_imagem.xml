@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/cardview_dark_background"
+    tools:context=".Visualizadores.VerImagens">
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/visualizador_viewpager"
+        android:paddingRight="2dp"
+        android:paddingLeft="2dp" />
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:fitsSystemWindows="true"
+        android:id="@+id/visualisador_toolbar_bottom"
+        android:background="@color/preto_toolbar"
+        android:visibility="gone"
+        app:navigationIcon="@drawable/ic_ceta_para_traz"/>
+
+</FrameLayout>
