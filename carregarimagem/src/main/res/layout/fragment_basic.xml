@@ -1,3 +1,5 @@
+
+<!--  Colocamos invisivel o codigo que serve para selecionar o tipo de corte da imagem  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="@dimen/spacing_xlarge"
+        android:padding="@dimen/spacing"
         custom:scv_background_color="@color/windowBackground"
         custom:scv_crop_mode="fit_image"
         custom:scv_frame_color="?attr/colorAccent"
@@ -22,7 +24,7 @@
         custom:scv_handle_color="?attr/colorAccent"
         custom:scv_handle_show_mode="show_always"
         custom:scv_handle_size="14dp"
-        custom:scv_min_frame_size="50dp"
+        custom:scv_min_frame_size="75dp"
         custom:scv_overlay_color="@color/overlay"
         custom:scv_touch_padding="8dp"
         />
@@ -35,6 +37,7 @@
         android:background="@color/divider"
         />
 
+    <!--  codigo para o tipo de corte de imagems  -->
     <LinearLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
@@ -44,7 +47,7 @@
         android:background="@color/windowBackground"
         android:paddingLeft="@dimen/spacing_xsmall"
         android:paddingRight="@dimen/spacing_xsmall"
-        >
+        android:visibility="gone">
 
         <Button
             android:id="@+id/button1_1"
@@ -87,7 +90,7 @@
         android:layout_marginLeft="@dimen/spacing_small"
         android:layout_marginRight="@dimen/spacing_small"
         android:background="@color/divider"
-        />
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"

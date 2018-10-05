@@ -3,13 +3,13 @@ apply plugin: 'maven'
 
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
 
 
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 26
+        minSdkVersion 16
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -45,7 +45,7 @@ task install(dependsOn: uploadArchives)
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.jakewharton:disklrucache:2.0.2'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
 

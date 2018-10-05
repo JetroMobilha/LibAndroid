@@ -18,13 +18,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.VideoView;
 
 import com.carregarimagem.R;
 import com.carregarimagem.util.Constantes;
+import com.imagens.Imagens;
 import com.isseiaoki.simplecropview.CropImageView;
 import com.isseiaoki.simplecropview.callback.CropCallback;
 import com.isseiaoki.simplecropview.callback.LoadCallback;
@@ -41,10 +42,14 @@ import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
-@RuntimePermissions public class BasicFragment extends Fragment {
-    private static final String TAG = BasicFragment.class.getSimpleName();
+
+@RuntimePermissions
+public class BasicFragment
+        extends Fragment
+        implements DialogoEscolheFonte.EscolheFonte {
 
     private static final int REQUEST_PICK_IMAGE = 10011;
+    private static final int REQUEST_CAMARA_IMAGE = 10013;
     private static final int REQUEST_SAF_PICK_IMAGE = 10012;
     private static final String PROGRESS_DIALOG = "ProgressDialog";
     private static final String KEY_FRAME_RECT = "FrameRect";
@@ -55,12 +60,12 @@ import permissions.dispatcher.RuntimePermissions;
     private Bitmap.CompressFormat mCompressFormat = Bitmap.CompressFormat.JPEG;
     private RectF mFrameRect = null;
     private Uri mSourceUri = null;
-    private boolean init= false;
+    private boolean init = false;
+    private DialogoEscolheFonte mDialogoEscolheFonte;
 
 
     // Note: only the system can call this constructor by reflection.
-    public BasicFragment() {
-    }
+    public BasicFragment() {}
 
     public static BasicFragment newInstance() {
         BasicFragment fragment = new BasicFragment();
@@ -69,79 +74,155 @@ import permissions.dispatcher.RuntimePermissions;
         return fragment;
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_basic, container, false);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // bind Views
         bindViews(view);
 
-       // mCropView.setDebug(true);
+        // mCropView.setDebug(true);
 
         if (savedInstanceState != null) {
             // restore data
-            if (savedInstanceState.getParcelable(KEY_FRAME_RECT)!=null)
+            if (savedInstanceState.getParcelable(KEY_FRAME_RECT) != null)
                 mFrameRect = savedInstanceState.getParcelable(KEY_FRAME_RECT);
 
-            if (savedInstanceState.getParcelable(KEY_SOURCE_URI)!=null)
+            if (savedInstanceState.getParcelable(KEY_SOURCE_URI) != null)
                 mSourceUri = savedInstanceState.getParcelable(KEY_SOURCE_URI);
         }
 
         if (mSourceUri == null) {
-            // default data
+            //definir uma imagem padrao para a lib.
             mSourceUri = getUriFromDrawableResId(getContext(), R.drawable.avatar);
-            Log.e("aoki", "mSourceUri = "+mSourceUri);
         }
         // load image
         mCropView.load(mSourceUri)
                 .initialFrameRect(mFrameRect)
                 .useThumbnail(true)
                 .execute(mLoadCallback);
+
+        if (!init) {
+
+             mDialogoEscolheFonte = DialogoEscolheFonte.instance(this);
+             mDialogoEscolheFonte.show(getFragmentManager(), null);
+            init = true;
+        }
     }
 
-
-
-    @Override public void onSaveInstanceState(Bundle outState) {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // save data
-     if (mCropView.getActualCropRect()!=null)  outState.putParcelable(KEY_FRAME_RECT, mCropView.getActualCropRect());
-        if (mCropView !=null)   outState.putParcelable(KEY_SOURCE_URI, mCropView.getSourceUri());
+        if (mCropView.getActualCropRect() != null)
+            outState.putParcelable(KEY_FRAME_RECT, mCropView.getActualCropRect());
+        if (mCropView != null) outState.putParcelable(KEY_SOURCE_URI, mCropView.getSourceUri());
     }
 
-    @Override public void onActivityResult(int requestCode, int resultCode, Intent result) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent result) {
         super.onActivityResult(requestCode, resultCode, result);
+
+        Imagens imagens =  Imagens.getInstance();
+
+        Bitmap bitmap ;
         if (resultCode == Activity.RESULT_OK) {
             // reset frame rect
             mFrameRect = null;
             switch (requestCode) {
                 case REQUEST_PICK_IMAGE:
+                    showProgress();
                     mSourceUri = result.getData();
-                    mCropView.load(mSourceUri)
-                            .initialFrameRect(mFrameRect)
-                            .useThumbnail(true)
-                            .execute(mLoadCallback);
+
+                      bitmap = Utils.decodeSampledBitmapFromUri(getActivity(),mSourceUri
+                            ,600);
+                    mSourceUri = createTempUri(getActivity());
+
+                    if (bitmap != null) {
+                       // bitmap = imagens.reduzTamanho(bitmap,imagens.getW(),imagens.getH());
+                        mCropView.save(bitmap).compressFormat(mCompressFormat).execute(mSourceUri, mSaveCallback);
+                    } else {
+                        dismissProgress();
+                        //definir uma imagem padrao para a lib.
+                        mSourceUri = getUriFromDrawableResId(getContext(), R.drawable.avatar);
+                        // load image
+                        mCropView.load(mSourceUri)
+                                .initialFrameRect(mFrameRect)
+                                .useThumbnail(true)
+                                .execute(mLoadCallback);
+                    }
                     break;
                 case REQUEST_SAF_PICK_IMAGE:
+                    showProgress();
                     mSourceUri = Utils.ensureUriPermission(getContext(), result);
-                    mCropView.load(mSourceUri)
+
+                      bitmap = Utils.decodeSampledBitmapFromUri(getActivity(),mSourceUri
+                            ,600);
+
+                   /* mCropView.load(mSourceUri)
                             .initialFrameRect(mFrameRect)
                             .useThumbnail(true)
-                            .execute(mLoadCallback);
+                            .execute(mLoadCallback);*/
+
+                    mSourceUri = createTempUri(getActivity());
+
+
+                    if (bitmap != null) {
+                       // bitmap = imagens.reduzTamanho(bitmap,imagens.getW(),imagens.getH());
+                        mCropView.save(bitmap).compressFormat(mCompressFormat).execute(mSourceUri, mSaveCallback);
+                    } else {
+                        dismissProgress();
+                        //definir uma imagem padrao para a lib.
+                        mSourceUri = getUriFromDrawableResId(getContext(), R.drawable.avatar);
+                        // load image
+                        mCropView.load(mSourceUri)
+                                .initialFrameRect(mFrameRect)
+                                .useThumbnail(true)
+                                .execute(mLoadCallback);
+                    }
+                    break;
+
+                case REQUEST_CAMARA_IMAGE:
+
+                    mSourceUri = createTempUri(getActivity());
+                    showProgress();
+                    Bundle extras = result.getExtras();
+
+                    if (extras != null && extras.get("data") != null) {
+                        Bitmap bitmap1  = (Bitmap) extras.get("data");
+                        bitmap1 = imagens.reduzTamanho(bitmap1,imagens.getW(),imagens.getH());
+
+                        mCropView.save(bitmap1).compressFormat(mCompressFormat).execute(mSourceUri, mSaveCallback);
+                    } else {
+                        dismissProgress();
+                        //definir uma imagem padrao para a lib.
+                        mSourceUri = getUriFromDrawableResId(getContext(), R.drawable.avatar);
+                        // load image
+                        mCropView.load(mSourceUri)
+                                .initialFrameRect(mFrameRect)
+                                .useThumbnail(true)
+                                .execute(mLoadCallback);
+                    }
+
                     break;
             }
         }
     }
 
-    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                                     @NonNull int[] grantResults) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         BasicFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
@@ -160,7 +241,8 @@ import permissions.dispatcher.RuntimePermissions;
         view.findViewById(R.id.buttonCamera).setOnClickListener(btnListener);
     }
 
-    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE) public void pickImage() {
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    public void pickImage() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             startActivityForResult(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"),
                     REQUEST_PICK_IMAGE);
@@ -172,19 +254,34 @@ import permissions.dispatcher.RuntimePermissions;
         }
     }
 
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) public void cropImage() {
+    @NeedsPermission(Manifest.permission.CAMERA)
+    public void cameraImage() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CAMARA_IMAGE);
+        }
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    public void cropImage() {
         showProgress();
         mCropView.crop(mSourceUri).execute(mCropCallback);
     }
 
     @OnShowRationale(Manifest.permission.READ_EXTERNAL_STORAGE)
     public void showRationaleForPick(PermissionRequest request) {
-        showRationaleDialog(R.string.app_name, request);
+        showRationaleDialog(R.string.ler_cartao, request);
     }
 
     @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public void showRationaleForCrop(PermissionRequest request) {
-        showRationaleDialog(R.string.app_name, request);
+        showRationaleDialog(R.string.escrever_cartao, request);
+    }
+
+    @OnShowRationale(Manifest.permission.CAMERA)
+    public void showRationaleForCamera(PermissionRequest request) {
+        showRationaleDialog(R.string.capturar_foto, request);
     }
 
     public void showProgress() {
@@ -280,11 +377,13 @@ import permissions.dispatcher.RuntimePermissions;
     private void showRationaleDialog(@StringRes int messageResId, final PermissionRequest request) {
         new AlertDialog.Builder(getActivity()).setPositiveButton(R.string.ok,
                 new DialogInterface.OnClickListener() {
-                    @Override public void onClick(@NonNull DialogInterface dialog, int which) {
+                    @Override
+                    public void onClick(@NonNull DialogInterface dialog, int which) {
                         request.proceed();
                     }
                 }).setNegativeButton(R.string.canselar, new DialogInterface.OnClickListener() {
-            @Override public void onClick(@NonNull DialogInterface dialog, int which) {
+            @Override
+            public void onClick(@NonNull DialogInterface dialog, int which) {
                 request.cancel();
             }
         }).setCancelable(false).setMessage(messageResId).show();
@@ -293,7 +392,8 @@ import permissions.dispatcher.RuntimePermissions;
     // Handle button event /////////////////////////////////////////////////////////////////////////
 
     private final View.OnClickListener btnListener = new View.OnClickListener() {
-        @Override public void onClick(View v) {
+        @Override
+        public void onClick(View v) {
             int i = v.getId();
             if (i == R.id.buttonDone) {
                 BasicFragmentPermissionsDispatcher.cropImageWithPermissionCheck(BasicFragment.this);
@@ -316,8 +416,8 @@ import permissions.dispatcher.RuntimePermissions;
             } else if (i == R.id.buttonPickImage) {
                 BasicFragmentPermissionsDispatcher.pickImageWithPermissionCheck(BasicFragment.this);
 
-            }else if (i == R.id.buttonCamera) {
-                BasicFragmentPermissionsDispatcher.pickImageWithPermissionCheck(BasicFragment.this);
+            } else if (i == R.id.buttonCamera) {
+                BasicFragmentPermissionsDispatcher.cameraImageWithPermissionCheck(BasicFragment.this);
 
             }
         }
@@ -326,39 +426,65 @@ import permissions.dispatcher.RuntimePermissions;
     // Callbacks ///////////////////////////////////////////////////////////////////////////////////
 
     private final LoadCallback mLoadCallback = new LoadCallback() {
-        @Override public void onSuccess() {
-
-            // iniciar galeria
-         if (!init)  BasicFragmentPermissionsDispatcher.pickImageWithPermissionCheck(BasicFragment.this);
-
-            init=true;
+        @Override
+        public void onSuccess() {
         }
 
-        @Override public void onError(Throwable e) {
+        @Override
+        public void onError(Throwable e) {
         }
     };
 
     private final CropCallback mCropCallback = new CropCallback() {
-        @Override public void onSuccess(Bitmap cropped) {
-
+        @Override
+        public void onSuccess(Bitmap cropped) {
             ((CarregarImagen) getActivity()).startResultActivity(cropped);
-
-          //  mCropView.save(cropped).compressFormat(mCompressFormat).execute(createSaveUri(), mSaveCallback);
+            //   mCropView.save(cropped).compressFormat(mCompressFormat).execute(createSaveUri(), mSaveCallback);
         }
 
-        @Override public void onError(Throwable e) {
+        @Override
+        public void onError(Throwable e) {
+            Bitmap bitmap = null;
+            ((CarregarImagen) getActivity()).startResultActivity(bitmap);
         }
     };
 
     private final SaveCallback mSaveCallback = new SaveCallback() {
-        @Override public void onSuccess(Uri outputUri) {
+        @Override
+        public void onSuccess(Uri outputUri) {
             dismissProgress();
-            ((CarregarImagen) getActivity()).startResultActivity(outputUri);
+
+            mCropView.load(mSourceUri)
+                    .initialFrameRect(mFrameRect)
+                    .useThumbnail(true)
+                    .execute(mLoadCallback);
+            mSourceUri = createTempUri(getActivity());
         }
 
-        @Override public void onError(Throwable e) {
+        @Override
+        public void onError(Throwable e) {
             dismissProgress();
+            if (mSourceUri == null) {
+                //definir uma imagem padrao para a lib.
+                mSourceUri = getUriFromDrawableResId(getContext(), R.drawable.avatar);
+            }
+            // load image
+            mCropView.load(mSourceUri)
+                    .initialFrameRect(mFrameRect)
+                    .useThumbnail(true)
+                    .execute(mLoadCallback);
         }
     };
 
+    @Override
+    public void onEscolheFonteCamera() {
+        BasicFragmentPermissionsDispatcher.cameraImageWithPermissionCheck(BasicFragment.this);
+        if (mDialogoEscolheFonte !=null) mDialogoEscolheFonte.dismiss();
+    }
+
+    @Override
+    public void onEscolheFontePinck() {
+        BasicFragmentPermissionsDispatcher.pickImageWithPermissionCheck(BasicFragment.this);
+        if (mDialogoEscolheFonte !=null) mDialogoEscolheFonte.dismiss();
+    }
 }

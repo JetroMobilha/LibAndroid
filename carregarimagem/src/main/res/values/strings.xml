@@ -4,4 +4,7 @@
     <string name="canselar">Canselar</string>
     <string name="editar_imagem">Editor de Imagem</string>
     <string name="permissao">Conseder a permissão</string>
+    <string name="escrever_cartao">Este app necéssita da sua permição para  guardar a imagem capturada na sua memoria</string>
+    <string name="ler_cartao">Este app necéssita da sua permição para listar as imagem do aparelho para selecionares</string>
+    <string name="capturar_foto">Este app necéssita da sua permição para poder capturar uma imagem com a sua camera</string>
 </resources>

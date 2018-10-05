@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fundo"
+    android:layout_gravity="center"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:id="@+id/lista_raiz">
+
+    <!--  Progresso principal  -->
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/lista_progresso"
+       style="@style/styles_conteiner_layout"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <!--  Conteudo para sem dados na lista   -->
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/lista_semdados_raiz"
+       style="@style/styles_conteiner_layout"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal">
+
+            <lal.adhish.gifprogressbar.GifView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:id="@+id/lista_imagem_sem_dados" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:id="@+id/lista_sem_dados_texto"
+                android:text="Sem dados" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:id="@+id/lista_carregar"
+                android:text="@string/carregar_de_novo"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <!-- lista de conteudo -->
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/lista_swipe_refresh">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/lista"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/item_lista"
+                android:layout_gravity="center_horizontal"/>
+
+        </FrameLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <!-- progrecarregarDadosegar mais -->
+    <ProgressBar
+        android:id="@+id/lista_progresso_caregamento"
+        android:background="@drawable/fundo_circulo_cinza"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="bottom|center"
+        android:visibility="gone" />
+
+</android.support.design.widget.CoordinatorLayout>
+

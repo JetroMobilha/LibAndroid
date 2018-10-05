@@ -1,6 +1,7 @@
 package com.listarapita;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -14,6 +15,7 @@ public abstract class ListaPadrao <E> extends ListaRapidaFragmentAbstract implem
 
     public ListaPadrao() {}
 
+    @NonNull
     @Override
     public Loader<List<E>> onCreateLoader(int id, Bundle args) {
         return new CarregadorListaPadrao<>(this);
@@ -31,13 +33,13 @@ public abstract class ListaPadrao <E> extends ListaRapidaFragmentAbstract implem
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("list",mList);
     }
 
     @Override
-    public void onLoadFinished(Loader<List<E>> loader, List<E> data) {
+    public void onLoadFinished(@NonNull Loader<List<E>> loader, List<E> data) {
 
         if (data != null && data.size() > 0) {
             if (mRecyclerView.getVisibility() == View.VISIBLE) {
@@ -95,7 +97,7 @@ public abstract class ListaPadrao <E> extends ListaRapidaFragmentAbstract implem
     }
 
     @Override
-    public void onLoaderReset(Loader<List<E>> loader) {}
+    public void onLoaderReset(@NonNull Loader<List<E>> loader) {}
 
     @Override
     protected List<?> onCrieatLista () {

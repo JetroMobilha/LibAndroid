@@ -11,6 +11,7 @@ public class CarregadorListaPadrao <E> extends AsyncTaskLoader<List<E>> {
     private List<E> mData;
 
     CarregadorListaPadrao(ListaPadrao listaPadrao) {
+        //noinspection ConstantConditions
         super(listaPadrao.getContext());
         this.fragment = listaPadrao;
     }

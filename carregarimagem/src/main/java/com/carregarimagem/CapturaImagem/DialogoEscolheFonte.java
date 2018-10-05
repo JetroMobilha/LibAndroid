@@ -4,6 +4,7 @@ package com.carregarimagem.CapturaImagem;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -25,6 +26,13 @@ public class DialogoEscolheFonte extends DialogFragment {
         // Required empty public constructor
     }
 
+    public static DialogoEscolheFonte instance(EscolheFonte escolheFonte){
+        DialogoEscolheFonte dialogoEscolheFonte = new DialogoEscolheFonte();
+        dialogoEscolheFonte.mListener = escolheFonte;
+        return dialogoEscolheFonte;
+    }
+
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -53,20 +61,11 @@ public class DialogoEscolheFonte extends DialogFragment {
             }
         });
         builder.setView(view);
+
+        if (mListener == null) throw new  RuntimeException("cria o objeto com  o metodo instance do dialogo");
         return builder.create();
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-
-        if (context instanceof  EscolheFonte){
-            mListener =(EscolheFonte) context;
-        }else {
-            throw new RuntimeException(" Obrigatorio implementar a interface DialogoEscolheFonte.EscolheFonte");
-        }
-        super.onAttach(context);
-    }
 
     public interface EscolheFonte{
 

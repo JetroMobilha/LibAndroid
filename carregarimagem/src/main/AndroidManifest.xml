@@ -1,10 +1,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.carregarimagem" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.carregarimagem">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application>
-        <activity android:name=".CapturaImagem.CarregarImagen" />
-        <activity android:name=".CapturaImagem.ResultActivity" />
+        <activity
+            android:name=".CapturaImagem.CarregarImagen"
+            android:launchMode="singleTask"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".CapturaImagem.ResultActivity"
+            tools:ignore="InnerclassSeparator" />
     </application>
 </manifest>

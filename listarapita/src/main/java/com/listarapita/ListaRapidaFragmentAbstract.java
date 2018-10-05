@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,6 +16,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,6 +33,8 @@ public abstract class ListaRapidaFragmentAbstract extends Fragment {
     protected NestedScrollView mImagem;
     protected TextView textoSendados;
     protected SwipeRefreshLayout refreshLayout;
+    protected Button button;
+    protected GifView pGif;
 
     // adpter para a lista
     protected RecyclerView.Adapter<?> mAdapter;
@@ -44,7 +49,6 @@ public abstract class ListaRapidaFragmentAbstract extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null){
-
             setPosicao(savedInstanceState.getInt("posica"));
             setPosicaoServidor(savedInstanceState.getInt("posicaServidor"));
             setCarregando(savedInstanceState.getBoolean("carregando"));
@@ -55,7 +59,7 @@ public abstract class ListaRapidaFragmentAbstract extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("posica",getPosicao());
          outState.putInt("posicaServidor",getPosicaoServidor());
@@ -63,14 +67,18 @@ public abstract class ListaRapidaFragmentAbstract extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.root, container, false);
+        view = setLayout(view,inflater,container);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // usa para mudar o layout do fragmento padrão
-       view = setLayout(view,inflater,container);
-
         mRecyclerView = view.findViewById(R.id.lista);
         progressBar = view.findViewById(R.id.lista_progresso);
         progressBarConteudo = view.findViewById(R.id.lista_progresso_caregamento);
@@ -78,7 +86,7 @@ public abstract class ListaRapidaFragmentAbstract extends Fragment {
         textoSendados = view.findViewById(R.id.lista_sem_dados_texto);
         refreshLayout = view.findViewById(R.id.lista_swipe_refresh);
 
-        GifView pGif = view.findViewById(R.id.lista_imagem_sem_dados);
+        pGif = view.findViewById(R.id.lista_imagem_sem_dados);
         pGif.setImageResource(R.drawable.img_sem_dados);
 
         // carregando novoa dados com um deslisar para baixo no inicio da lista
@@ -101,8 +109,8 @@ public abstract class ListaRapidaFragmentAbstract extends Fragment {
         mRecyclerView.setHasFixedSize(true);
 
         // botao para carregarDados manualmente quando sem dados no primeiro carregamento
-        final AppCompatButton carregar = view.findViewById(R.id.lista_carregar);
-        carregar.setOnClickListener(new View.OnClickListener() {
+         button = view.findViewById(R.id.lista_carregar);
+         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -116,7 +124,6 @@ public abstract class ListaRapidaFragmentAbstract extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
 
                 if ( mRecyclerView.getLayoutManager() instanceof  LinearLayoutManager){
                     LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
@@ -148,7 +155,6 @@ public abstract class ListaRapidaFragmentAbstract extends Fragment {
         });
 
         onCreatViewLista();
-        return view;
     }
 
     @Override

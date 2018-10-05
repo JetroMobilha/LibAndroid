@@ -22,7 +22,6 @@ import com.imagens.SalvarImagmAarelho;
 import com.verimagens.ApagarFicheiro;
 import com.verimagens.R;
 import com.verimagens.Visualizadores.Adptadores.VisualizadorDeImagemPagerAdapter;
-import com.verimagens.Visualizadores.fragmentos.VisualisadorFragmento;
 
 import java.io.File;
 import java.io.Serializable;
@@ -31,9 +30,8 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-
-public abstract class VerImagens extends AppCompatActivity
-        implements VisualisadorFragmento.OnFragmentInteractionListener {
+@Deprecated
+public abstract class VerImagens extends AppCompatActivity {
 
 
     // Todo : Implementação experimental que deve ser substituida
@@ -194,7 +192,7 @@ public abstract class VerImagens extends AppCompatActivity
         }
     }
 
-    @Override
+
     public void onClickImagemVisualisador(String objetoFarras) {
 
         final Toolbar toolbarBottom = findViewById(R.id.visualisador_toolbar_bottom);

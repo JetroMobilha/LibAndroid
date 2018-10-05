@@ -18,7 +18,6 @@ import android.widget.Toast;
     Imagens imagens = Imagens.getInstance();
 
     public SalvarImagmAarelho(String nome){
-
         this.nome= nome;
     }
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+ image - referência para visualizar a imagem.
+playButton - referência para reproduzir a imagem do botão.
+loadingButton - referência à imagem do carregador.
+videoUrl - URL do vídeo.
+playButton - máximo de progresso (100 por padrão).
+loop- o vídeo será repetido automaticamente quando terminar ( falsepor padrão).
+autoplay- o vídeo será reproduzido automaticamente quando estiver carregado ( falsepor padrão).
+ -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_dark_background"
+    android:layout_gravity="center">
+
+    <VideoView
+        android:id="@+id/imagem_visualizador_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <ProgressBar
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/progress"
+        android:layout_gravity="center"/>
+</FrameLayout>
+
+

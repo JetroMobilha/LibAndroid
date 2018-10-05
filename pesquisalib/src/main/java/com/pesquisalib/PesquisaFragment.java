@@ -88,7 +88,7 @@ public abstract class PesquisaFragment<T> extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.root, container, false);
+        View view = inflater.inflate(R.layout.root_pesquisa, container, false);
 
         mRecyclerView = view.findViewById(R.id.lista);
         mRecyclerView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
@@ -140,38 +140,11 @@ public abstract class PesquisaFragment<T> extends Fragment {
         return view;
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
         // iniciando atributo para comecar a pesquisa
         pesquisar = true;
-    }
-
-    public synchronized Integer getPosicao() {
-        return posicao;
-    }
-
-    public synchronized void setPosicao(int posicao) {
-        this.posicao = posicao;
-    }
-
-    public synchronized void setBaixando(boolean baixando) {
-        this.baixando = baixando;
-    }
-
-    public synchronized boolean isBaixando() {
-        return baixando;
-    }
-
-
-    public synchronized String getMpesquisa() {
-        return mpesquisa;
-    }
-
-
-    public synchronized void setMpesquisa(String mpesquisa) {
-        this.mpesquisa = mpesquisa;
     }
 
     public synchronized void setNovapesquisa(String mpesquisa) {
@@ -199,30 +172,6 @@ public abstract class PesquisaFragment<T> extends Fragment {
                 pequisarTarefa();
             }
         }
-    }
-
-    public String getmPesquisaAntiga() {
-        return mPesquisaAntiga;
-    }
-
-    public void setmPesquisaAntiga(String mPesquisaAntiga) {
-        this.mPesquisaAntiga = mPesquisaAntiga;
-    }
-
-    public Integer getPosicaoServidor() {
-        return posicaoServidor;
-    }
-
-    public void setPosicaoServidor(Integer posicaoServidor) {
-        this.posicaoServidor = posicaoServidor;
-    }
-
-    public boolean isCanceladaTarefa() {
-        return canceladaTarefa;
-    }
-
-    public void setCanceladaTarefa(boolean canceladaTarefa) {
-        this.canceladaTarefa = canceladaTarefa;
     }
 
     // tarefa para a pesquisa
@@ -283,16 +232,15 @@ public abstract class PesquisaFragment<T> extends Fragment {
                 mostrarRecycler();
             } else {
 
-                if (progressBar.getVisibility() == View.VISIBLE) mostrarImagem();
+                if (pesquisaItemList.size() == 0) mostrarImagem();
             }
 
-            // livre para carregar maisdados e servidor
+            // livre para carregar mais dados e servidor
             if (!isBaixando()) {
                 progressBarConteudo.setVisibility(View.GONE);
                 setBaixando(true);
             }
         }
-
 
         @Override
         protected List<T> doInBackground(String... params) {
@@ -326,27 +274,35 @@ public abstract class PesquisaFragment<T> extends Fragment {
         }
     }
 
-
-    private void mostrarProgresso() {
+    protected void mostrarProgresso() {
         progressBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
         mSemDados.setVisibility(View.GONE);
     }
 
-    private void mostrarRecycler() {
+    protected void mostrarRecycler() {
 
         progressBar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mSemDados.setVisibility(View.GONE);
     }
 
-    private void mostrarImagem() {
+    protected void mostrarImagem() {
 
         progressBar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.GONE);
         mSemDados.setVisibility(View.VISIBLE);
         imagem.setVisibility(View.GONE);
         texto.setText(textoDica());
+    }
+
+    protected void mostrarImagem(String dica) {
+
+        progressBar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
+        mSemDados.setVisibility(View.VISIBLE);
+        imagem.setVisibility(View.GONE);
+        texto.setText(dica);
     }
 
     /**
@@ -400,5 +356,55 @@ public abstract class PesquisaFragment<T> extends Fragment {
 
     public void setServidor(boolean servidor) {
         this.servidor = servidor;
+    }
+
+    public synchronized Integer getPosicao() {
+        return posicao;
+    }
+
+    public synchronized void setPosicao(int posicao) {
+        this.posicao = posicao;
+    }
+
+    public synchronized void setBaixando(boolean baixando) {
+        this.baixando = baixando;
+    }
+
+    public synchronized boolean isBaixando() {
+        return baixando;
+    }
+
+
+    public synchronized String getMpesquisa() {
+        return mpesquisa;
+    }
+
+
+    public synchronized void setMpesquisa(String mpesquisa) {
+        this.mpesquisa = mpesquisa;
+    }
+
+    public String getmPesquisaAntiga() {
+        return mPesquisaAntiga;
+    }
+
+    public void setmPesquisaAntiga(String mPesquisaAntiga) {
+        this.mPesquisaAntiga = mPesquisaAntiga;
+    }
+
+    public Integer getPosicaoServidor() {
+        return posicaoServidor;
+    }
+
+    public void setPosicaoServidor(Integer posicaoServidor) {
+        this.posicaoServidor = posicaoServidor;
+    }
+
+    public boolean isCanceladaTarefa() {
+        return canceladaTarefa;
+    }
+
+    public void setCanceladaTarefa(boolean canceladaTarefa) {
+        this.canceladaTarefa = canceladaTarefa;
     }
 }

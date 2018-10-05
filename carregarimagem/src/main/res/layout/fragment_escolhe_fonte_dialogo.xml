@@ -6,26 +6,63 @@
     android:layout_margin="30dp"
     android:gravity="center"
     android:orientation="horizontal"
-    android:background="?colorPrimary"
+    android:background="@color/Branco"
     android:paddingTop="30dp"
     android:paddingBottom="30dp" >
 
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/buttonCamera"
-        android:layout_width="@dimen/button_height"
-        android:layout_height="@dimen/button_height"
-        android:layout_margin="@dimen/spacing_small"
-        android:tint="?colorAccent"
-        android:src="@drawable/ic_photo_camera" />
-
-    <android.support.v7.widget.AppCompatImageButton
-        android:layout_width="@dimen/button_height"
-        android:layout_height="@dimen/button_height"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/spacing_small"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/spacing"
         android:gravity="center"
-        android:tint="?colorAccent"
-        android:id="@+id/buttonPickImage"
-        android:src="@drawable/ic_photo_library_black_24dp" />
+        android:layout_weight="1">
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/buttonCamera"
+            android:layout_width="@dimen/button_height"
+            android:layout_height="@dimen/button_height"
+            android:layout_margin="@dimen/spacing_small"
+            android:tint="@color/Preto"
+            android:src="@drawable/ic_photo_camera"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tirar uma foto"
+            android:textColor="@color/Preto"
+            style="@style/Base.TextAppearance.AppCompat.Small"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/spacing"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:layout_width="@dimen/button_height"
+            android:layout_height="@dimen/button_height"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/spacing_small"
+            android:gravity="center"
+            android:tint="@color/Preto"
+            android:id="@+id/buttonPickImage"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_photo_library_black_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carregar do telefone"
+            style="@style/Base.TextAppearance.AppCompat.Small"
+            android:textColor="@color/Preto"/>
+
+    </LinearLayout>
+
 </LinearLayout>
 
